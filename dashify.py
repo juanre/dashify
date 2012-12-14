@@ -31,9 +31,12 @@ def dash_name(name):
     'hola-adios'
     >>> dash_name('dir/holaAdios')
     'dir/hola-adios'
+    >>> dash_name('this_dir/this other dir/withAFile.txt')
+    'this-dir/this-other-dir/with-a-file.txt'
     """
     name = re.sub(r'_+', '-', name)
     name = re.sub(r'\s+', '-', name)
+    name = re.sub(r'([a-z])([A-Z])([A-Z])', r'\1-\2-\3', name)
     name = re.sub(r'([a-z])([A-Z])', r'\1-\2', name)
     name = re.sub(r'--+', '-', name)
     return name.lower()
