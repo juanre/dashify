@@ -1,0 +1,23 @@
+dashify --- use dashes as word separators in file names
+
+Traverse a directory structure converting
+
+this_dir/this other dir/withAFile.txt
+
+into
+
+this-dir/this-other-dir/with-a-file.txt
+
+Install with
+
+$ python setup.py install
+
+If you have setuptools it will install dashify as an executable; just
+do
+
+$ dashify --help
+
+for options.
+
+If you don't have setuptools will just install the module.  You can
+always make dashify.py executable and copy it to your path.
