@@ -1,4 +1,5 @@
 #!/usr/bin/env python
+# -*- coding: utf-8 -*-
 """
 Make prettier file names.  Gets rid of spaces, underscores and capital
 leters, and uses dashes to separate words.
@@ -33,12 +34,21 @@ def dash_name(name):
     'dir/hola-adios'
     >>> dash_name('this_dir/this other dir/withAFile.txt')
     'this-dir/this-other-dir/with-a-file.txt'
+    >>> dash_name(u'hola–adios&crazy')
+    u'hola-adios-crazy'
     """
     name = re.sub(r'_+', '-', name)
+    name = re.sub(r'–+', '-', name)
+    name = re.sub(r',+', '-', name)
+    name = re.sub(r'&+', '-', name)
+    name = re.sub(r':+', '-', name)
+    name = re.sub(r'\'+', '-', name)
+    name = re.sub(r'\"+', '-', name)
     name = re.sub(r'\s+', '-', name)
     name = re.sub(r'([a-z])([A-Z])([A-Z])', r'\1-\2-\3', name)
     name = re.sub(r'([a-z])([A-Z])', r'\1-\2', name)
     name = re.sub(r'--+', '-', name)
+    name = re.sub(r'\.-', '-', name)
     return name.lower()
 
 def dash_file(fname, verbose=False):
