@@ -18,6 +18,16 @@ Options:
 
 import os, re
 
+#http://stackoverflow.com/questions/517923/what-is-the-best-way-to-remove-accents-in-a-python-unicode-string
+import unicodedata
+def strip_accents(s):
+    #if isinstance(s, basestring):
+    #    s = s.decode('utf-8')
+    if isinstance(s, unicode):
+        return ''.join(c for c in unicodedata.normalize('NFD', s)
+                       if unicodedata.category(c) != 'Mn')
+    return s
+
 def dash_name(name):
     """
     >>> dash_name('hola_adios')
@@ -34,17 +44,14 @@ def dash_name(name):
     'dir/hola-adios'
     >>> dash_name('this_dir/this other dir/withAFile.txt')
     'this-dir/this-other-dir/with-a-file.txt'
-    >>> dash_name(u'hola–adios&crazy')
+    >>> dash_name(u'hola-adios&crazy')
+    u'hola-adios-crazy'
+    >>> dash_name(u'hola-^#$adios()&Crazy')
     u'hola-adios-crazy'
     """
+    name = strip_accents(name)
+    name = re.sub(r'[^a-zA-Z0-9/\\\.]+', '-', name)
     name = re.sub(r'_+', '-', name)
-    name = re.sub(r'–+', '-', name)
-    name = re.sub(r',+', '-', name)
-    name = re.sub(r'&+', '-', name)
-    name = re.sub(r':+', '-', name)
-    name = re.sub(r'\'+', '-', name)
-    name = re.sub(r'\"+', '-', name)
-    name = re.sub(r'\s+', '-', name)
     name = re.sub(r'([a-z])([A-Z])([A-Z])', r'\1-\2-\3', name)
     name = re.sub(r'([a-z])([A-Z])', r'\1-\2', name)
     name = re.sub(r'--+', '-', name)
@@ -134,4 +141,5 @@ def as_main():
             dash_tree(f, verbose)
 
 if __name__ == "__main__":
+    #print dash_name(u'hóla–^#$adioç()&Crazy')
     as_main()
