@@ -46,7 +46,7 @@ def dash_name(name):
     'this-dir/this-other-dir/with-a-file.txt'
     >>> dash_name(u'hola-adios&crazy')
     u'hola-adios-crazy'
-    >>> dash_name(u'hola-^#$adios()&Crazy')
+    >>> dash_name(u'hola-^#$adios()&Crazy[]')
     u'hola-adios-crazy'
     """
     name = strip_accents(name)
@@ -56,6 +56,7 @@ def dash_name(name):
     name = re.sub(r'([a-z])([A-Z])', r'\1-\2', name)
     name = re.sub(r'--+', '-', name)
     name = re.sub(r'\.-', '-', name)
+    name = re.sub(r'-+$', '', name)
     return name.lower()
 
 def dash_file(fname, verbose=False):
